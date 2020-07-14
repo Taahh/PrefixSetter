@@ -2,9 +2,6 @@ package com.taahyt.prefixsetter;
 
 import com.taahyt.prefixsetter.bridge.LuckPermsBridge;
 import com.taahyt.prefixsetter.command.PrefixChangerCommand;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class PrefixSetter extends JavaPlugin
@@ -22,14 +19,14 @@ public class PrefixSetter extends JavaPlugin
         luckPermsBridge = new LuckPermsBridge();
 
         getCommand("setprefix").setExecutor(new PrefixChangerCommand());
+
+        String author = getDescription().getAuthors().get(0);
+        String version = getDescription().getVersion();
+
+        getLogger().info(String.format("Enabled version %s by %s", version, author));
+
     }
 
-
-    @Override
-    public void onDisable()
-    {
-
-    }
     public static PrefixSetter getPlugin() {
         return plugin;
     }

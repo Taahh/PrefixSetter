@@ -30,7 +30,8 @@ public class LuckPermsBridge
 
     public void changePrefix(Player player, String group)
     {
-        getLuckPerms().getUserManager().modifyUser(player.getUniqueId(), (User user) -> {
+        getLuckPerms().getUserManager().modifyUser(player.getUniqueId(), (User user) ->
+        {
             String prefix = getGroup(group).getCachedData().getMetaData().getPrefix();
 
             user.data().clear(NodeType.PREFIX::matches);
@@ -57,33 +58,50 @@ public class LuckPermsBridge
             .map(NodeType.INHERITANCE::cast)
             .map(InheritanceNode::getGroupName)
             .collect(Collectors.toSet());
+
+        List<String> moreGroups = new ArrayList<>();
+
         for (String name : groups)
         {
             if (name == null)
             {
                 continue;
             }
+
+            //get the group for the player's inherited group names
             Group group = getGroup(name);
-            Set<String> moreGroups = group.getNodes().stream()
-            .filter(NodeType.INHERITANCE::matches)
-            .map(NodeType.INHERITANCE::cast)
-            .map(InheritanceNode::getGroupName)
-            .collect(Collectors.toSet());
+
+            //add the inherits of the groups
+            moreGroups.addAll(group.getNodes().stream()
+                .filter(NodeType.INHERITANCE::matches)
+                .map(NodeType.INHERITANCE::cast)
+                .map(InheritanceNode::getGroupName)
+                .collect(Collectors.toSet()));
+            //add the inherits of the groups to the groups list
             groups.addAll(moreGroups);
-            for (String name2 : moreGroups) //this is honestly an endless cycle isnt it lol
+        }
+
+        //now goes through the names again for the inherits of the inherits and stuff
+        for (String name2 : moreGroups)
+        {
+            //check if the group name is null, and if so, skip this
+            if (name2 == null)
             {
-                if (name == null)
-                {
-                    continue;
-                }
-                Group moreGroup = getGroup(name2);
-                Set<String> evenMoreGroups = moreGroup.getNodes().stream()
+                continue;
+            }
+
+            //gets another group object based on the inherits of the inherits
+            Group moreGroup = getGroup(name2);
+
+            //puts them into a string
+            Set<String> evenMoreGroups = moreGroup.getNodes().stream()
                 .filter(NodeType.INHERITANCE::matches)
                 .map(NodeType.INHERITANCE::cast)
                 .map(InheritanceNode::getGroupName)
                 .collect(Collectors.toSet());
-                groups.addAll(evenMoreGroups);
-            }
+
+            //adds them to the groups list
+            groups.addAll(evenMoreGroups);
         }
         return groups;
     }
@@ -98,16 +116,20 @@ public class LuckPermsBridge
     {
         List<String> groupsAndPrefix = new ArrayList<>();
 
+        System.out.println(StringUtils.join(getGroups(player), ", "));
+
         for (String s : getGroups(player))
         {
             System.out.println(s);
             String groupPrefix = getGroup(s).getCachedData().getMetaData().getPrefix();
-            if (groupPrefix == null)
+            if (s == null || s.equalsIgnoreCase("null"))
             {
                 continue;
             }
-
-            System.out.println(groupPrefix);
+            if (groupPrefix == null || groupPrefix.equalsIgnoreCase("null"))
+            {
+                continue;
+            }
 
             assert groupPrefix != null;
             groupsAndPrefix.add(s + " - " + ChatColor.translateAlternateColorCodes('&', groupPrefix + player.getName()));
@@ -129,7 +151,8 @@ public class LuckPermsBridge
     }
 
 
-    public LuckPerms getLuckPerms() {
+    public LuckPerms getLuckPerms()
+    {
         return luckperms;
     }
 }
