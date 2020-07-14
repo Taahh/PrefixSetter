@@ -9,7 +9,7 @@ import net.luckperms.api.node.NodeType;
 import net.luckperms.api.node.types.InheritanceNode;
 import net.luckperms.api.node.types.PrefixNode;
 import net.luckperms.api.query.QueryOptions;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 

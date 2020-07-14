@@ -1,9 +1,7 @@
 package com.taahyt.prefixsetter.command;
 
 import com.taahyt.prefixsetter.PrefixSetter;
-import com.taahyt.prefixsetter.bridge.LuckPermsBridge;
 import net.luckperms.api.model.group.Group;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
