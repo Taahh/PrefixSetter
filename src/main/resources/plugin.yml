@@ -1,0 +1,11 @@
+name: PrefixSetter
+version: 1.0
+description: A setter for prefixes
+depend:
+  - LuckPerms
+author: Taahh
+main: com.taahyt.prefixsetter.PrefixSetter
+commands:
+  setprefix:
+    usage: /<command> <clear | groupname>
+    description: Changes your prefix to that of a groups
